@@ -36,9 +36,16 @@ if __name__ == '__main__':
         data = json.dumps({'text': message})
 
         # Send a HTTP request
-        req  = urllib2.Request(url, data, {'Content-Type': 'application/json'})
-        f = urllib2.urlopen(req)
-        response = f.read()
-        print response
-        f.close()
+        try:
+            req  = urllib2.Request(url, data, {'Content-Type': 'application/json'})
+            f = urllib2.urlopen(req)
+            response = f.read()
+            print response
+        except urllib2.HTTPError, err:
+            print "Error code : ", err.code
+        except urllib2.URLError, err:
+            print "Error : ", err.reason
+        finally:
+            print "closing now"
+            f.close()
 
