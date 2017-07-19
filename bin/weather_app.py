@@ -20,7 +20,14 @@ if __name__ == '__main__':
 
     # Get weather info from 'api.wunderground.com'
     url = 'http://api.wunderground.com/api/' + apikey + '/conditions/q/' + state + '/' + city + '.json'
-    response = urllib2.urlopen(url).read()
+    try:
+        response = urllib2.urlopen(url).read()
+    except urllib2.HTTPError, err:
+        print "Error code : ", err.code
+        sys.exit(1)
+    except urllib2.URLError, err:
+        print "Error : ", err.reason
+        sys.exit(1)
 
     # Convert data to Json
     data = json.loads(response)
